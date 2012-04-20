@@ -157,7 +157,7 @@ case "$1" in
 				exit 1
 			else
 				echo "$servicename PID $Ido2dbPID not running. Removing lockfile."
-				rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile
+				rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile $Ido2dbSockFile
 			fi
 		fi
 		printf "Starting $servicename:"
@@ -196,7 +196,7 @@ case "$1" in
 		    kill9proc_ido2db
  		else
  		    echo "done."
-		    rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile
+		    rm -f $Ido2dbStatusFile $Ido2dbRunFile $Ido2dbLockDir/$Ido2dbLockFile $Ido2dbCommandFile  $Ido2dbSockFile
  		fi
 
 		;;
