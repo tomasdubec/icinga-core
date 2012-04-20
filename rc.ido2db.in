@@ -73,6 +73,8 @@ elif [ -f /etc/init.d/functions ]; then
         . /etc/init.d/functions
 fi
 
+PS=`which ps`
+
 
 # Check that ido2db exists.
 if [ ! -f $Ido2dbBin ]; then
@@ -91,7 +93,7 @@ fi
 status_ido2db ()
 {
 
-	if ps -p $Ido2dbPID > /dev/null 2>&1; then
+	if $PS -p $Ido2dbPID > /dev/null 2>&1; then
 		return 0
 	else
 		return 1
@@ -102,8 +104,13 @@ status_ido2db ()
 
 ido2db_procs ()
 {
+<<<<<<< .merge_file_8yzifa
+        PCHILD=`$PS --no-headers --ppid  "$Ido2dbPID" | /usr/bin/wc -l`
+        PID_LIST=`$PS --no-headers --ppid  "$Ido2dbPID"| /bin/awk {'print $1'} | /usr/bin/tr '\n' ','`
+=======
         PCHILD=`/usr/bin/pgrep -P  "$Ido2dbPID" | /usr/bin/wc -l`
         PID_LIST=`/usr/bin/pgrep -P  "$Ido2dbPID" | /usr/bin/tr '\n' ' ' `
+>>>>>>> .merge_file_ulzHL8
 }
 
 
@@ -112,7 +119,11 @@ printstatus_ido2db()
 {
      if status_ido2db $1 $2; then
         ido2db_procs
-	echo "$servicename (pid $ido2dbPID) is running with $PCHILD child procs $PID_LIST..."
+<<<<<<< .merge_file_8yzifa
+	echo "$servicename (pid $Ido2dbPID) is running with $PCHILD child procs ${PID_LIST%?}."
+=======
+	echo "$servicename (pid $Ido2dbPID) is running with $PCHILD child procs $PID_LIST..."
+>>>>>>> .merge_file_ulzHL8
 	elif test $? -eq 2; then # this command will fail on solaris the "==" needed to be replaced with "-eq"
 		echo "$servicename is not running but subsystem locked"
 	else
