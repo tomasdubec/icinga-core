@@ -111,7 +111,7 @@ printstatus_ido2db()
      if status_ido2db $1 $2; then
         ido2db_procs
 	echo "$servicename (pid $ido2dbPID) is running with $PCHILD child procs $PID_LIST..."
-	elif test $? == 2; then
+	elif test $? -eq 2; then # this command will fail on solaris the "==" needed to be replaced with "-eq"
 		echo "$servicename is not running but subsystem locked"
 	else
 		echo "$servicename is not running"
