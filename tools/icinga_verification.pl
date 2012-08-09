@@ -48,22 +48,6 @@ sub get_ido2db_version;
 sub get_error_from_log;
 sub get_icinga_web_data;
 
-### preconfiguration ###
-#Critical System Services
-my $config_ref = {
-    critical_services => {
-        apache2 => { binaries => [ 'httpd', 'apache2', 'httpd2' ] },
-        mysql => { binaries => [ 'mysqld' ] },
-		postgresql => { binaries => [ 'postmaster' ] },
-        icinga => { binaries => [ 'icinga' ] },
-        ido2db => { binaries => [ 'ido2db' ] },
-    },
-	noncritical_services => {
-		snmptt => { binaries => [ 'snmptt' ] },
-		npcd => { binaries => [ 'npcd' ] },
-	}   
-};
-
 ################################
 # Option parsing
 ################################
@@ -91,6 +75,30 @@ print <<EOF;
 ##############################  by Frankstar / Team Quality Assurance & VM    ##############################
 ############################################################################################################
 EOF
+# distribution
+my $distribution = (split( ",", get_distribution() ))[0];
+
+#FIXME , debian, centos/RHEL Binaries definition
+#Binarie Defination
+#if ($distribution =~ m/\d+\sDebian\s/ix){
+#	my $pgsql_binarie = 'postgres';
+#}
+
+### preconfiguration ###
+#Critical System Services
+my $config_ref = {
+    critical_services => {
+        apache2 => { binaries => [ 'httpd', 'apache2', 'httpd2' ] },
+        mysql => { binaries => [ 'mysqld' ] },
+		postgresql => { binaries => [ 'postgres' ] },
+        icinga => { binaries => [ 'icinga' ] },
+        ido2db => { binaries => [ 'ido2db' ] },
+    },
+	noncritical_services => {
+		snmptt => { binaries => [ 'snmptt' ] },
+		npcd => { binaries => [ 'npcd' ] },
+	}   
+};
 
 #Check if we are on Windows
 my $oscheck = $^O;
@@ -258,9 +266,6 @@ my $mysqlver =
     which('mysql')
     ? ( split( ",", qx(mysql -V) ) )[0]
     : 'mysql binary not found';
-
-# distribution
-my $distribution = (split( ",", get_distribution() ))[0];
 
 # icinga version
 my $icingaversion = get_icinga_version();
@@ -729,6 +734,9 @@ sub which (@) {
     push @path, "$icinga_base/../bin";
     push @path, "$icinga_base/../sbin";
 	push @path, "$icinga_base/../lib";
+	#FIXME Hardcoded ver. for first Postgres Testing
+	push @path, "/../usr/lib/postgresql/8.4/bin";
+	
     if ($pnp4nagios_base) {
         push @path, "$pnp4nagios_base/../bin";
         push @path, "$pnp4nagios_base/../sbin";
