@@ -396,6 +396,9 @@ fi
 
 
 %changelog
+* Sun Jan 13 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.7.4-1
+- bump version
+
 * Thu Nov 08 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.3-1
 - bump version
 
