@@ -247,6 +247,9 @@ fi
 %{_bindir}/idomod.o
 
 %changelog
+* Sun Jan 13 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.6.2-1
+- bump version
+
 * Fri Dec 02 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-1
 - bump to 1.6.1
 
