@@ -172,6 +172,22 @@ notes_url_target=main
 
 
 
+# TAB-FRIENDLY <TITLE>S
+# Activating this option changes the <title> of status.cgi
+# and extinfo.cgi when they refer to a single host, service,
+# or group. They will then read:
+#	[Host]
+#	{HostGroup}
+#	ServiceDesc @ Host
+#	(ServiceGroup)
+# These are easier to read and find if you use (many) tabs
+# in your browser.
+# Default is enabled. 0=disabled, 1=enabled
+
+tab_friendly_titles=1
+
+
+
 
 ######################################
 #
@@ -738,22 +754,6 @@ show_tac_header_pending=1
 # By default disabled, as this could be a performance killer.
 
 extinfo_show_child_hosts=0
-
-
-
-# TAB-FRIENDLY <TITLE>S
-# Activating this option changes the <title> of status.cgi
-# and extinfo.cgi when they refer to a single host, service,
-# or group. They will then read:
-#	[Host]
-#	{HostGroup}
-#	ServiceDesc @ Host
-#	(ServiceGroup)
-# These are easier to read and find if you use (many) tabs
-# in your browser.
-# Default is enabled. 0=disabled, 1=enabled
-
-tab_friendly_titles=1
 
 
 
