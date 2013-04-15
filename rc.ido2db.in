@@ -105,7 +105,7 @@ status_ido2db ()
 ido2db_procs ()
 {
         PCHILD=`$PS --no-headers --ppid  "$Ido2dbPID" | /usr/bin/wc -l`
-        PID_LIST=`$PS --no-headers --ppid  "$Ido2dbPID"| /bin/awk {'print $1'} | /usr/bin/tr '\n' ','`
+        PID_LIST=`$PS --no-headers --ppid  "$Ido2dbPID"| cut -c 1-6 | /usr/bin/tr '\n' ','`
 }
 
 
@@ -115,7 +115,7 @@ printstatus_ido2db()
      if status_ido2db $1 $2; then
         ido2db_procs
 	echo "$servicename (pid $Ido2dbPID) is running with $PCHILD child procs ${PID_LIST%?}."
-	elif test $? -eq 2; then # this command will fail on solaris the "==" needed to be replaced with "-eq"
+	elif test $? -eq 2; then 
 		echo "$servicename is not running but subsystem locked"
 	else
 		echo "$servicename is not running"
