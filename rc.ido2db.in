@@ -73,6 +73,7 @@ elif [ -f /etc/init.d/functions ]; then
         . /etc/init.d/functions
 fi
 
+# Find the system path to the 'ps' tool
 PS=`which ps`
 
 
