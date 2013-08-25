@@ -1,0 +1,74 @@
+#!/bin/sh
+# 
+# chkconfig: 345 99 01
+# description: Icinga network monitor
+#
+# File : ido2db
+#
+#LD_LIBRARY_PATH=/usr/local/mysql/lib/mysql:/usr/local/mysql-5.0.51b/lib/mysql:/usr/sfw/lib/mysql:/usr/sfw/lib:$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=/usr/local/mysql-5.0.51b/lib/mysql:/usr/sfw/lib:/usr/local/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
+  
+# Source function library
+# Solaris doesn't have an rc.d directory, so do a test first
+if [ -f /etc/rc.d/init.d/functions ]; then
+	. /etc/rc.d/init.d/functions
+elif [ -f /etc/init.d/functions ]; then
+	. /etc/init.d/functions
+fi
+
+prefix=/usr/local/icinga
+exec_prefix=${prefix}
+NdoBin=${exec_prefix}/bin/ido2db
+NdoCfg=/etc/icinga/ido2db.cfg
+NdoSock=/var/icinga/ido.sock
+
+# Check that icinga exists.
+if [ ! -f $NdoBin ]; then
+    echo "Executable file $NdoBin not found.  Exiting."
+    exit 1
+fi
+
+# Check that icinga.cfg exists.
+if [ ! -f $NdoCfg ]; then
+    echo "Configuration file $NdoCfg not found.  Exiting."
+    exit 1
+fi
+          
+# See how we were called.
+case "$1" in
+
+	start)
+		echo "Starting ido2db:"
+		cd $prefix
+		echo "Starting NDO channel: \c"
+		rm -f $NdoSock
+#		truss -r all -w all -f -o /tmp/truss-out $NdoBin -c $NdoCfg &
+		$NdoBin -c $NdoCfg
+		if [ $? -eq 0 ]
+		then
+			echo " done"
+		else
+			echo " failed"
+		fi
+		;;
+
+	stop)
+		echo "Stopping ido2db: "
+
+		pkill -TERM ido2db
+		;;
+
+	restart)
+		$0 stop
+		$0 start
+		;;
+
+	*)
+		echo "Usage: icinga {start|stop|restart}"
+		exit 1
+		;;
+
+esac
+  
+# End of this script
