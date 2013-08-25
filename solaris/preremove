@@ -1,21 +1,32 @@
 #!/bin/sh
 
+SVCADM=/usr/sbin/svcadm
 SVCCFG=/usr/sbin/svccfg
 GREP=/usr/bin/grep
 USERDEL=/usr/sbin/userdel
 GROUPDEL=/usr/sbin/groupdel
 fmri=svc:/application/network/icinga:default
+idofmri=svc:/application/network/ido2db:default
 
+${SVCADM} disable ${fmri}
 ${SVCCFG} delete -f ${fmri}
 
-${GREP} icinga /etc/passwd > /dev/null 2> /dev/null
-if [ $? -eq 0 ]; then
-        ${USERDEL} -r icinga
+svcs ${idofmri} > /dev/null 2>&1
+if [ $? eq 0 ]; then
+  ${SVCADM} disable ${idofmri}
+  ${SVCCFG} delete -f ${idofmri}
 fi
 
-${GREP} icinga /etc/group > /dev/null 2> /dev/null
-if [ $? -eq 0 ]; then
-        ${GROUPDEL} icinga
+if [ ! -f /etc/icinga/icinga.cfg ]; then
+  ${GREP} icinga /etc/passwd > /dev/null 2> /dev/null
+  if [ $? -eq 0 ]; then
+    ${USERDEL} icinga
+  fi
+
+  ${GREP} icinga /etc/group > /dev/null 2> /dev/null
+  if [ $? -eq 0 ]; then
+    ${GROUPDEL} icinga
+  fi
 fi
 
 exit 0
