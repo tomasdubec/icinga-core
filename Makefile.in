@@ -611,16 +611,18 @@ Prototype:
 	$(MAKE) all
 	$(MAKE) DESTDIR=$(PACKDIR) INIT_OPTS='' INSTALL_OPTS='' COMMAND_OPTS='' icinga_grp='' icinga_usr='' \
 	    install install-commandmode install-webconf install-idoutils
-	cd sample-config; \
-	for file in *.cfg; \
+	for file in sample-config/*.cfg; \
 	do \
-	    ../$(INSTALL) -m 644 $$file $(PACKDIR)/$(CFGDIR)/$$file.$(VERSION); \
+	    cat $$file > $$file.$(VERSION); \
+	    $(INSTALL) -m 644 $$file.$(VERSION) $(PACKDIR)$(CFGDIR); \
+	    rm -f $$file.$(VERSION); \
 	done
 	chmod 640 $(PACKDIR)/$(CFGDIR)/resource.cfg.$(VERSION)
-	cd sample-config/template-object; \
-	for file in *.cfg; \
+	for file in sample-config/template-object/*.cfg; \
 	do \
-	    ../../$(INSTALL) -m 644 $$file $(PACKDIR)/$(CFGDIR)/objects/$$file.$(VERSION); \
+	    cat $$file > $$file.$(VERSION); \
+	    $(INSTALL) -m 644 $$file.$(VERSION) $(PACKDIR)$(CFGDIR)/objects; \
+	    rm -f $$file.$(VERSION); \
 	done
 	mkdir -p $(PACKDIR)/lib/svc/method/
 	$(INSTALL) -o root -g bin -m 555 daemon-init $(PACKDIR)/lib/svc/method/icinga
