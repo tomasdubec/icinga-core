@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
 <service_bundle type='manifest' name='ido2db'>
-        <service name='application/network/ido2db ' type='service' version='1'>
+        <service name='application/network/ido2db' type='service' version='1'>
 
                 <create_default_instance enabled='false' />
                 <single_instance />
@@ -14,8 +14,8 @@
                 </dependency>
 
                 <exec_method type='method' name='start'   exec='/lib/svc/method/ido2db start' timeout_seconds='60' />
-                <exec_method type='method' name='restart' exec='/lib/svc/method/do2db restart' timeout_seconds='60' />
-                <exec_method type='method' name='stop'    exec='/lib/svc/method/do2db stop' timeout_seconds='60' />
+                <exec_method type='method' name='restart' exec='/lib/svc/method/ido2db restart' timeout_seconds='60' />
+                <exec_method type='method' name='stop'    exec='/lib/svc/method/ido2db stop' timeout_seconds='60' />
         
                 <stability value="Unstable" />
                 <template>

@@ -12,7 +12,7 @@ ${SVCADM} disable ${fmri}
 ${SVCCFG} delete -f ${fmri}
 
 svcs ${idofmri} > /dev/null 2>&1
-if [ $? eq 0 ]; then
+if [ $? -eq 0 ]; then
   ${SVCADM} disable ${idofmri}
   ${SVCCFG} delete -f ${idofmri}
 fi
