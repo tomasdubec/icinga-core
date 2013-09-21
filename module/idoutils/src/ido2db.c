@@ -1604,7 +1604,12 @@ int ido2db_handle_client_connection(int sd, ido2db_proxy *proxy) {
 #ifdef DEBUG_IDO2DB2
 		printf("BYTESREAD: %d\n", result);
 #endif
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "BYTESREAD: %d\n", result);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_connection() BYTESREAD: %d\n", result);
+		if (result > 0 && result < 50) {
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
+			    "ido2db_handle_client_connection() Small packet (%d octets) -- skipping.\n", result);
+			continue;
+		}
 
 		/* append data we just read to dynamic buffer */
 		buf[result] = '\x0';
@@ -1637,7 +1642,9 @@ int ido2db_handle_client_connection(int sd, ido2db_proxy *proxy) {
 
 			if (!in_transaction) {
 				io_since_last_commit = 0;
+#ifdef DEBUG_IDO2DB2
 				printf("Committing...\n");
+#endif
 			}
 
 			if (!in_transaction && ido2db_db_tx_commit(&idi) != IDO_OK)
