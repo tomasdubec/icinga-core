@@ -26,6 +26,8 @@ ENHANCEMENTS
 * classic ui: include more logos #4057 - CF/RB
 
 * idoutils: ido2db should check db schema on startup, and bail early on errors #5272 - MF
+* idoutils: add config dump in progress to programstatus table (used by Icinga Web) #5080 - MF
+* idoutils: add refresh sla periods functionality (used by Icinga Reporting) #4885 - TG/MF
 
 FIXES
 
@@ -56,6 +58,8 @@ CHANGES
 	   additionally HTTP_REFFERER="/icinga/cgi-bin/cmd.cgi" on command submission,
 	   otherwise the command will be rejected if csrf protection is enabled.
 * classic ui: added current_notification_number to host and service status in status.cgi #5370
+* idoutils: new column 'config_dump_in_progress' in table program_status #5080
+* idoutils: new mysql tables 'icinga_sla_periods' and 'icinga_outofsla_periods' #4885
 
 
 1.10.2 - 05/12/2013
