@@ -96,6 +96,8 @@ char *libdbi_driver_dir = NULL;
 
 int stop_signal_detected = IDO_FALSE;
 
+int enable_refresh_sla_periods = IDO_FALSE;
+
 char *sigs[35] = {"EXIT", "HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS", "FPE", "KILL", "USR1", "SEGV", "USR2", "PIPE", "ALRM", "TERM", "STKFLT", "CHLD", "CONT", "STOP", "TSTP", "TTIN", "TTOU", "URG", "XCPU", "XFSZ", "VTALRM", "PROF", "WINCH", "IO", "PWR", "UNUSED", "ZERR", "DEBUG", (char *)NULL};
 
 
@@ -661,6 +663,9 @@ int ido2db_process_config_var(char *arg) {
 	else if (!strcmp(var, "libdbi_driver_dir")) {
 		if ((libdbi_driver_dir = strdup(val)) == NULL)
 			return IDO_ERROR;
+	}
+	else if (!strcmp(var, "enable_refresh_sla_periods")) {
+		enable_refresh_sla_periods = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	}
 	/* DEPRECATED variables */
 	else if (!strcmp(var, "clean_realtime_tables_on_core_startup")) {
@@ -1989,9 +1994,14 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf) {
 				break;
 			case IDO_API_ENDCONFIGDUMP:
 				idi->current_input_data = IDO2DB_INPUT_DATA_CONFIGDUMPEND;
+				/* triggers config_dump_in_progress & refresh_sla_periods */
 				ido2db_db_update_config_dump(idi, IDO_FALSE);
+
 				idi->tables_cleared = IDO_FALSE;
 				syslog(LOG_USER | LOG_INFO, "Config dump completed");
+				if (enable_refresh_sla_periods == IDO_TRUE) {
+					syslog(LOG_USER | LOG_INFO, "Refresh SLA periods completed");
+				}
 				break;
 
 				/* archived data */

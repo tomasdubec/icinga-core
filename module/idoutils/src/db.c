@@ -113,6 +113,8 @@ int ido2db_oci_prepared_statement_dbversion_select(ido2db_idi *idi);
 extern ido2db_dbconfig ido2db_db_settings;
 extern time_t ido2db_db_last_checkin_time;
 
+extern int enable_refresh_sla_periods;
+
 extern char *libdbi_driver_dir;
 
 char *ido2db_db_rawtablenames[IDO2DB_MAX_DBTABLES] = {
@@ -2892,6 +2894,27 @@ int ido2db_db_update_config_dump(ido2db_idi *idi, int in_progress) {
 	if (result == IDO_OK) {
 		/* force commit */
 		result = ido2db_db_tx_commit(idi);
+	}
+
+	/* if config dump end, refresh sla periods
+	 * in_transaction must be false */
+	if (in_progress == IDO_FALSE) {
+		if (enable_refresh_sla_periods == IDO_TRUE) {
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_update_config_dump() refresh sla periods\n");
+
+			if (asprintf(&buf, "CALL icinga_refresh_slaperiods();") == -1)
+				buf = NULL;
+			result = ido2db_db_query(idi, buf);
+
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+			free(buf);
+	
+			if (result == IDO_OK) {
+				/* force commit */
+				result = ido2db_db_tx_commit(idi);
+			}
+		}
 	}
 
 	return result;

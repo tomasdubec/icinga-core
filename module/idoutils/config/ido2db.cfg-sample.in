@@ -318,3 +318,14 @@ oci_errors_to_syslog=1
 # 12 – Bind Variables and Wait Events
 
 oracle_trace_level=0
+
+
+
+# ENABLE REFRESH SLA PERIODS - !!EXPERIMENTAL!!
+# Enable this option to refresh the sla periods table after config dump.
+# Required for Icinga Reporting 1.11+.
+# Requires procedure icinga_refresh_slaperiods() and EXECUTE GRANTS
+# for the database user (db_user above). By default disabled.
+#
+# enable_refresh_sla_periods=0
+
